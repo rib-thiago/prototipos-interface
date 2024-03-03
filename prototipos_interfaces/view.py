@@ -23,33 +23,26 @@ class ShowContentView(App):
         with Container(id="cont01"):
             self.label = Label(id="label_dir")
             yield self.label
-
             # Label para mostrar o idioma selecionado
             self.language_label = Label(id="label_lang")
             yield self.language_label
-            
-            
         self.path = Input(placeholder="Path do Diretório", type="text", id="input")
         yield self.path
-        
         with Container(id="cont02"):
             self.select = Select((), id="select_file")
             yield self.select
             # Select para idiomas
             self.language = Select(((lang, lang) for lang in Languages), id="select_lang")
             yield self.language
-
-        with Center():            
-            self.button = Button("Extrair Texto", variant="success", id="b_extrair")
-            yield self.button
-        
+        with Horizontal(id="cont03"):
+            self.button_extrair = Button("Extrair Texto", variant="success", id="b_extrair")
+            yield self.button_extrair
+            self.button_exibir = Button("Exibir Imagem", variant="warning", id="b_exibir")
+            yield self.button_exibir
         self.content_label = Label(id="label_content")
         self.content = None
-#            yield LoadingIndicator(id="indicator")
-        with ScrollableContainer() as container: 
+        with ScrollableContainer(): 
             yield self.content_label
-        yield container
-
         yield Footer()
 
     def on_input_changed(self, event):
@@ -71,11 +64,13 @@ class ShowContentView(App):
     @on(Select.Changed, "#select_lang")
     def print_label(self, event):
         self.language_label.update(f'[blue bold]Idioma:[/] {event.value}')
-        
+
+    @on(Button.Pressed, "#b_extrair")    
     def on_button_pressed(self, event):
-        if self.file_path.endswith('.jpg') or self.file_path.endswith('.png'):
-            self.controller.show_image(self.file_path)
         self.content = self.controller.extract_text(self.file_path, self.language.value)
         self.content_label.update(self.content)
 
-
+    @on(Button.Pressed, "#b_exibir")
+    def act_something(self, event): 
+        if self.file_path.endswith('.jpg') or self.file_path.endswith('.png'):
+            self.controller.show_image(self.file_path)
