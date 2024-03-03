@@ -2,12 +2,17 @@
 
 from textual.app import App, ComposeResult
 from textual.widgets import Input, Label, Select, Button, Header, Footer, LoadingIndicator
-from textual.containers import ScrollableContainer, Container
+from textual.containers import ScrollableContainer, Container, Center, Horizontal, Vertical
+from textual import on
 import os
 
+Languages = ('eng', 'por', 'rus')
+
+
 class ShowContentView(App):
-    CSS_PATH = "hello.css"
+    CSS_PATH = "style.css"
     BINDINGS = [("q", "quit", "Sair")]
+
     
     def __init__(self, controller):
         super().__init__()
@@ -15,21 +20,36 @@ class ShowContentView(App):
 
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
-        with Container():
-            self.label = Label(id="hello")
+        with Container(id="cont01"):
+            self.label = Label(id="label_dir")
             yield self.label
-            self.path = Input(placeholder="Path do Diretório", type="text")
-            yield self.path
-            self.select = Select(())
+
+            # Label para mostrar o idioma selecionado
+            self.language_label = Label(id="label_lang")
+            yield self.language_label
+            
+            
+        self.path = Input(placeholder="Path do Diretório", type="text", id="input")
+        yield self.path
+        
+        with Container(id="cont02"):
+            self.select = Select((), id="select_file")
             yield self.select
-            self.button = Button("Extrair Texto", variant="success")
+            # Select para idiomas
+            self.language = Select(((lang, lang) for lang in Languages), id="select_lang")
+            yield self.language
+
+        with Center():            
+            self.button = Button("Extrair Texto", variant="success", id="b_extrair")
             yield self.button
-            self.content_label = Label(id="hello2")
-            self.content = None
-#             yield LoadingIndicator(id="indicator")
-            with ScrollableContainer() as container: 
-                yield self.content_label
-            yield container
+        
+        self.content_label = Label(id="label_content")
+        self.content = None
+#            yield LoadingIndicator(id="indicator")
+        with ScrollableContainer() as container: 
+            yield self.content_label
+        yield container
+
         yield Footer()
 
     def on_input_changed(self, event):
@@ -40,19 +60,22 @@ class ShowContentView(App):
         file_tuples = [(file_name, file_name) for file_name in files]
         self.select.set_options(file_tuples)
 
-    def on_select_changed(self, event):
+
+    @on(Select.Changed, "#select_file")
+    def print_something(self, event):
         selected_file = event.value
         directory_path = self.path.value.strip()
         self.file_path = os.path.join(directory_path, selected_file)
         self.label.update(f'[green bold]Arquivo:[/] {self.file_path}')
-        
 
+    @on(Select.Changed, "#select_lang")
+    def print_label(self, event):
+        self.language_label.update(f'[blue bold]Idioma:[/] {event.value}')
+        
     def on_button_pressed(self, event):
         if self.file_path.endswith('.jpg') or self.file_path.endswith('.png'):
             self.controller.show_image(self.file_path)
-        self.content = self.controller.extract_text(self.file_path, language='rus')
+        self.content = self.controller.extract_text(self.file_path, self.language.value)
         self.content_label.update(self.content)
 
-    def action_remove_load(self):
-        self.query_one("#indicator").remove()
 

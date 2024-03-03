@@ -1,0 +1,53 @@
+#cont01 {
+    layout: grid;
+    grid-size: 1;
+    grid-gutter: 1;
+    padding: 2;
+}
+
+#cont02 {
+    layout: grid;
+    grid-size: 2;
+    grid-gutter: 2;
+    padding: 2;
+}
+
+#label_dir, #label_lang {
+    width: 100%;
+    column-span: 1;
+    content-align: center bottom;
+    text-style: bold;
+}
+
+#input {
+    width: 100%;
+}
+
+#label_content {
+    width: 100%;
+    column-span: 2;
+    content-align: center bottom;
+    text-style: bold;
+}
+
+#select_file, #select_lang {
+    width: 100%;
+    column-span: 1;
+    content-align: center bottom;
+    text-style: bold;
+}
+
+Button {
+    width: 50%;
+    column-span: 1;
+    content-align: center bottom;
+    margin: 0 50 2 50;    
+}
+
+ScrollableContainer {
+    width: 100%;
+    column-span: 2;
+    content-align: center top;
+    text-style: bold;
+    margin: 2 0 2 0;
+}
