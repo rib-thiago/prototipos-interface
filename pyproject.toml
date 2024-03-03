@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "prototipos-interfaces"
+version = "0.1.0"
+description = ""
+authors = ["Thiago Ribeiro <mackandalls@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.10.13"
+textual = {extras = ["dev"], version = "^0.52.1"}
+pytesseract = "^0.3.10"
+opencv-python = "^4.9.0.80"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
