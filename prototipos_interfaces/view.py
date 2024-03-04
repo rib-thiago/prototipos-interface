@@ -1,8 +1,8 @@
 # view.py
 
 from textual.app import App, ComposeResult
-from textual.widgets import Input, Label, Select, Button, Header, Footer, LoadingIndicator
-from textual.containers import ScrollableContainer, Container, Center, Horizontal, Vertical
+from textual.widgets import Input, Label, Select, Button, Header, Footer
+from textual.containers import ScrollableContainer, Container, Horizontal
 from textual import on
 import os
 
