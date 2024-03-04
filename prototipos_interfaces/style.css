@@ -8,14 +8,15 @@ Screen {
     layout: grid;
     grid-size: 1;
     grid-gutter: 1;
-    padding: 2;
+    margin-top: 2;
+    padding-bottom: 2;
 }
 
 #cont02 {
     layout: grid;
     grid-size: 2;
     grid-gutter: 2;
-    padding: 2;
+    padding: 1;
 }
 
 #cont03 {
