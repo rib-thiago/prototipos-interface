@@ -19,7 +19,8 @@ class ShowContentView(App):
         self.controller = controller
 
     def compose(self) -> ComposeResult:
-        yield Header(show_clock=True)
+        self.header = Header(show_clock=True)
+        yield self.header
         with Container(id="cont01"):
             self.label = Label(id="label_dir")
             yield self.label
@@ -52,7 +53,6 @@ class ShowContentView(App):
         files = os.listdir(event.input.value)
         file_tuples = [(file_name, file_name) for file_name in files]
         self.select.set_options(file_tuples)
-
 
     @on(Select.Changed, "#select_file")
     def print_something(self, event):
